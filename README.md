@@ -17,10 +17,12 @@ This application allows users to:
 
 ```
 ai-image-generator/
+├── .venv/            # Python virtual environment
 ├── backend/          # FastAPI Python backend
 │   ├── main.py              # API endpoints
 │   ├── image_generator.py   # Stability AI integration
 │   ├── utils.py             # Utility functions
+│   ├── requirements.txt     # Python dependencies
 │   └── .env.example         # Environment template
 │
 └── frontend/         # Next.js React frontend
@@ -41,7 +43,7 @@ ai-image-generator/
 
 ### Prerequisites
 
-- **Python 3.10+**
+- **Python 3.7+**
 - **Node.js 18+**
 - **Stability AI API Key** – Get one at [platform.stability.ai](https://platform.stability.ai/)
 
@@ -49,34 +51,30 @@ ai-image-generator/
 
 ### Backend Setup
 
-1. **Navigate to the backend directory:**
+1. **Navigate to the project root and create a virtual environment:**
    ```bash
-   cd backend
+   python3 -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
    ```
 
-2. **Create a virtual environment (recommended):**
+2. **Install dependencies:**
    ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r backend/requirements.txt
    ```
 
-3. **Install dependencies:**
+3. **Configure environment variables:**
    ```bash
-   pip install fastapi uvicorn python-dotenv requests pydantic
+   cp backend/.env.example backend/.env
    ```
-
-4. **Configure environment variables:**
-   ```bash
-   cp .env.example .env
-   ```
-   Then edit `.env` and add your Stability AI API key:
+   Then edit `backend/.env` and add your Stability AI API key:
    ```
    STABILITY_API_KEY=your_api_key_here
    ```
 
-5. **Start the backend server:**
+4. **Start the backend server:**
    ```bash
-   python3 -m uvicorn main:app --reload --port 8000
+   cd backend
+   ../.venv/bin/uvicorn main:app --reload --port 8000
    ```
    The API will be available at `http://localhost:8000`
 
@@ -131,6 +129,8 @@ Generates an image from a text prompt.
 }
 ```
 
+**Interactive Docs:** `http://localhost:8000/docs`
+
 ---
 
 ## 🛠️ Tech Stack
@@ -171,13 +171,12 @@ Generates an image from a text prompt.
 
 ### Running Both Servers
 
-You can run both servers simultaneously in separate terminals:
+Run both servers simultaneously in separate terminals:
 
 **Terminal 1 – Backend:**
 ```bash
 cd backend
-source venv/bin/activate
-python3 -m uvicorn main:app --reload --port 8000
+../.venv/bin/uvicorn main:app --reload --port 8000
 ```
 
 **Terminal 2 – Frontend:**
@@ -201,10 +200,12 @@ npm start
 
 | Issue | Solution |
 |-------|----------|
+| `No module named uvicorn` | Activate venv: `source .venv/bin/activate` and install deps |
 | `STABILITY_API_KEY` not found | Ensure `.env` file exists in `backend/` with valid key |
 | CORS errors | Check backend is running on port 8000 |
 | Image not generating | Verify API key is valid and has credits |
 | Frontend can't connect | Ensure backend is running before making requests |
+| `Address already in use` | Kill existing process: `lsof -ti:8000 \| xargs kill -9` |
 
 ---
 

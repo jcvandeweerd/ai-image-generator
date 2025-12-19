@@ -26,7 +26,7 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-6 bg-neutral-950">
-      <h1 className="text-3xl font-bold mb-6">AITA Image Generator</h1>
+      <h1 className="text-3xl font-bold mb-6">webqid. Image Generator</h1>
 
       <PromptInput
         value={prompt}
